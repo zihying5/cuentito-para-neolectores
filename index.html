@@ -87,12 +87,12 @@
     to   { opacity:1; transform:translateY(0); }
   }
   .page-img-area {
-    width:100%; min-height:200px; max-height:440px;
+    width:100%;
     display:flex; align-items:center; justify-content:center;
     background:linear-gradient(135deg,#f5e6d3,#e8d5bc);
     font-size:4rem; overflow:hidden;
   }
-  .page-img-area img { width:100%; max-height:440px; object-fit:cover; display:block; }
+  .page-img-area img { width:100%; height:auto; object-fit:contain; display:block; }
   .page-badge {
     display:inline-block; margin:16px 32px 0;
     background:rgba(201,123,42,0.10); color:var(--accent-amber);
@@ -171,10 +171,7 @@
         <div class="cover-title">Mi nombre es…</div>
         <div class="cover-sub">Un cuento para leer y escuchar</div>
         <div class="cover-info">
-          <strong>¿Cómo funciona?</strong><br>
-          🔊 Pulsa el botón para escuchar cada página.<br>
-          📖 Lee el texto junto con el audio.<br>
-          ➡ Pasa la página cuando estés listo.
+🔊 Escucha y 📖 lee con el audio.
         </div>
         <div style="display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;">
           <button class="speak-btn" id="cover-speak-btn" title="Escuchar la portada" onclick="speakCover()">🔊</button>
@@ -227,7 +224,7 @@ const pages = [
     img: "p2.jpg",
     badge: "Página 1",
     display: "Chih-Hao es un chico de Taiwán.\nEstá contento porque es el primer día de clase.",
-    audio: ["p2.mp3"]
+    audio: ["志豪.mp3", "p2.mp3"]
   },
   {
     img: "p3.jpg",
@@ -245,7 +242,7 @@ const pages = [
     img: "p5.jpg",
     badge: "Página 4",
     display: "Chih-Hao mira al nombre en la pizarra.\nÉl piensa: «¿Por qué dicen que mi nombre es difícil?»",
-    audio: ["p5.mp3"]
+    audio: ["志豪.mp3", "p5.mp3"]
   },
   {
     img: "p6.jpg",
@@ -269,7 +266,7 @@ const pages = [
     img: "p9.jpg",
     badge: "Página 8",
     display: "Chih-Hao dice: «Me llamo Leo.»\nEs más fácil. Es más corto.",
-    audio: ["p9.mp3"]
+    audio: ["志豪.mp3", "p9.mp3"]
   },
   {
     img: "p10.jpg",
@@ -281,7 +278,7 @@ const pages = [
     img: "p11.jpg",
     badge: "Página 10",
     display: "Pero a veces, cuando está solo, piensa en su nombre,\nen su historia, en… «Chih-Hao».",
-    audio: ["p11.mp3"]
+    audio: ["p11.mp3", "志豪.mp3"]
   }
 ];
 
@@ -367,7 +364,7 @@ function renderPage() {
   document.getElementById('progress-fill').style.width = pct + '%';
   document.getElementById('page-counter').textContent = `${currentPage+1} / ${pages.length}`;
 
-  document.getElementById('prev-btn').disabled = currentPage === 0;
+  document.getElementById('prev-btn').disabled = false;
   document.getElementById('next-btn').textContent =
     currentPage === pages.length - 1 ? 'Fin del cuento 🎉' : 'Siguiente →';
 }
@@ -384,6 +381,7 @@ function nextPage() {
 }
 function prevPage() {
   if (currentPage > 0) { currentPage--; renderPage(); }
+  else { stopAudio(); document.getElementById('progress-fill').style.width='0%'; document.getElementById('page-counter').textContent='Portada'; show('cover-screen'); }
 }
 
 // ══════════════════════════════════════════
